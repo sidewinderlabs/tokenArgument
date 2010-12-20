@@ -1,0 +1,43 @@
+<?php
+
+/**
+ * @file
+ * The tokenArgument module.
+ *
+ * Provides current arguments as tokens. See the README.txt for more information.
+ *
+ * @ingroup token
+ */
+
+// Set the number of [argN] and [argN-alias] tokens.
+define('TOKEN_NUM_ARG_TOKENS', defined('MENU_MAX_PARTS') ? MENU_MAX_PARTS : 7);
+/**
+ * Implementation of hook_token_list().
+ */
+function tokenArgument_token_list($type = 'all') {
+  $tokens = array();
+
+  if ($type == 'global' || $type == 'all') {
+    // Declare the arg tokens.
+    $tokens['global']['argN'] = t('Url argument N (N = 0, 1, ..., %max).', array('%max' => TOKEN_NUM_ARG_TOKENS - 1));
+    $tokens['global']['argN-alias'] = t('Url alias argument N - defaults to url if no alias is found.');
+  }
+
+  return $tokens;
+}
+
+/**
+ * Implementation of hook_token_values().
+ */
+function tokenArgument_token_values($type, $object = NULL) {
+  $values = array();
+  switch ($type) {
+    case 'global':
+      for ($count = 0; $count < TOKEN_NUM_ARG_TOKENS; ++$count ) {
+        $values['arg'. $count] = arg($count);
+        $values['arg'. $count .'-alias'] = arg($count, $alias);
+      }
+      break;
+  }
+  return $values;
+}

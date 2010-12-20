@@ -1,0 +1,9 @@
+name = tokenArgument
+description = Provides arguments as tokens.
+dependencies[] = token
+core = 6.x
+
+version = "6.x-1.x-dev"
+core = "6.x"
+project = "token"
+
